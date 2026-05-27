@@ -51,11 +51,13 @@ task db:link
 task db:types
 ```
 
-Start the app and open [http://localhost:3000](http://localhost:3000):
+Start the app:
 
 ```bash
 task dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000).
 
 You should see the MarketLab workshop start screen.
 
