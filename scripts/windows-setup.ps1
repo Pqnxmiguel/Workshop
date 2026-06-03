@@ -41,6 +41,14 @@ if (-not (Test-Path "mise.toml")) {
 }
 
 # --- 2. Install mise -----------------------------------------------------------
+
+if (-not (Test-Command "scoop")){
+    Write-Step "Installing Scoop"
+    iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+} else {
+    Write-Step "Scoop already installed"
+}
+
 if (-not (Test-Command "mise")) {
     if (Test-Command "scoop") {
         Write-Step "Installing mise via Scoop"
@@ -59,6 +67,22 @@ If you use Scoop, install it from https://scoop.sh/ and run:
 } else {
     Write-Step "mise already installed"
 }
+
+# --- 2b. Install Visual C++ 2022 runtime (mise depends on it) ------------------
+# A clean Windows install lacks the MSVC runtime DLLs that mise.exe needs to run.
+# Without them, `mise activate pwsh` fails with exit code -1073741515
+# (0xC0000135, STATUS_DLL_NOT_FOUND). Scoop itself suggests extras/vcredist2022.
+Write-Step "Ensuring Visual C++ 2022 runtime (vcredist2022)"
+# Scoop needs Git to manage any bucket other than 'main' (e.g. 'extras').
+if (-not (Test-Command "git")) {
+    Write-Step "Installing Git via Scoop"
+    Invoke-NativeCommand -Command "scoop" -Arguments @("install", "git")
+}
+$buckets = & scoop bucket list
+if (-not ($buckets -match "extras")) {
+    Invoke-NativeCommand -Command "scoop" -Arguments @("bucket", "add", "extras")
+}
+Invoke-NativeCommand -Command "scoop" -Arguments @("install", "vcredist2022")
 
 # --- 3. Activate mise in current session + persist in PowerShell profile ------
 Write-Step "Activating mise in current session"

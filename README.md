@@ -31,6 +31,14 @@ After the script finishes, open a new terminal window before running the
 remaining commands. The setup script adds mise activation to your shell so the
 tools pinned in `mise.toml` are available through normal `task ...` commands.
 
+If a new PowerShell window still reports that `task` is not recognized, your
+execution policy is likely blocking the PowerShell profile that activates mise.
+Allow it once for your user, then open a new window:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+```
+
 ## Supabase
 
 Create a hosted Supabase project, then copy the Next.js environment values into
