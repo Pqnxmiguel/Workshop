@@ -20,7 +20,16 @@ Do not add dependencies or replace the stack unless asked.
 
 ## Skills and Docs
 
-Use relevant installed skills for framework-specific work.
+Project skills live in `.agents/skills/` and are tracked in `skills-lock.json`. After cloning, restore them with:
+
+```bash
+npx skills experimental_install
+```
+
+Use relevant installed skills for framework-specific work:
+
+- `supabase` — Supabase products, auth, migrations, and MCP usage
+- `supabase-postgres-best-practices` — Postgres query, schema, and RLS performance guidance
 
 For Next.js-specific uncertainty, prefer the installed docs in `node_modules/next/dist/docs/`.
 
